@@ -1,5 +1,8 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import { createUser } from '../services/userAPI';
+import Loading from './components/Loading';
+import LoginCard from './components/LoginCard';
 
 class Login extends React.Component {
   constructor() {
@@ -8,7 +11,13 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.state = {
       user: '',
+      loading: false,
+      redirect: false,
     };
+  }
+
+  componentDidMount() {
+    this.enableButton();
   }
 
   handleChange({ target }) {
@@ -20,36 +29,37 @@ class Login extends React.Component {
     this.enableButton();
   }
 
+  createUserCall = async () => {
+    const { user } = this.state;
+    this.setState({
+      loading: true,
+    });
+    await createUser({ name: user });
+    this.setState({
+      redirect: true,
+    });
+  }
+
   enableButton() {
     const { user } = this.state;
-    const maxNum = 3;
+    const maxNum = 2;
     if (user.length >= maxNum) {
-      document.querySelector('.login-btn').removeAttribute('disabled');
+      document.querySelector('.login-btn').disabled = false;
+    } else {
+      document.querySelector('.login-btn').disabled = true;
     }
   }
 
   render() {
-    const { user } = this.state;
+    const { user, loading, redirect } = this.state;
     return (
       <div data-testid="page-login">
-        <form>
-          <input
-            data-testid="login-name-input"
-            name="user"
-            placeholder="Nome"
-            value={ user }
-            onChange={ this.handleChange }
-          />
-          <button
-            type="submit"
-            data-testid="login-submit-button"
-            className="login-btn"
-            onClick={ createUser({ name: user }) }
-            disabled
-          >
-            Entrar
-          </button>
-        </form>
+        {loading ? <Loading /> : <LoginCard
+          user={ user }
+          createUserCall={ this.createUserCall }
+          handleChange={ this.handleChange }
+        />}
+        {redirect ? <Redirect to="/search" /> : <Redirect to="/" />}
       </div>
     );
   }
