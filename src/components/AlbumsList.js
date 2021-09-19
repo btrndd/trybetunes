@@ -47,12 +47,14 @@ class AlbumsList extends React.Component {
 AlbumsList.propTypes = {
   returnApi: PropTypes.bool.isRequired,
   artist: PropTypes.string.isRequired,
-  albums: PropTypes.arrayOf(PropTypes.shape({
-    artistName: PropTypes.string.isRequired,
-    collectionId: PropTypes.number.isRequired,
-    collectionName: PropTypes.string.isRequired,
-    artworkUrl100: PropTypes.string.isRequired,
-  })).isRequired,
+  albums: PropTypes.arrayOf(
+    PropTypes.shape({
+      artistName: PropTypes.string.isRequired,
+      collectionId: PropTypes.number.isRequired,
+      collectionName: PropTypes.string.isRequired,
+      artworkUrl100: PropTypes.string.isRequired,
+    }).isRequired,
+  ).isRequired,
 };
 
 export default AlbumsList;

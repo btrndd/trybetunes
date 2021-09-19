@@ -14,7 +14,7 @@ class Search extends React.Component {
       searchText: '',
       loading: true,
       returnApi: '',
-      albums: '',
+      albums: [],
       loadingAlbums: false,
       artist: '',
     };
