@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class MusicCard extends React.Component {
   render() {
@@ -19,5 +20,12 @@ class MusicCard extends React.Component {
     );
   }
 }
+
+MusicCard.propTypes = {
+  info: PropTypes.shape({
+    previewUrl: PropTypes.string.isRequired,
+    trackName: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default MusicCard;
