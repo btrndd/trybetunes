@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Loading from './Loading';
 import AlbumCard from './AlbumCard';
@@ -11,37 +10,33 @@ class AlbumsList extends React.Component {
   }
 
   list() {
-    const { albums, returnApi } = this.props;
+    const { albums, artist } = this.props;
     return (
       <section>
-        {/* <h2>
-          Resultado de álbuns de:
-          {' '}
-          { albums[0].artistName }
-        </h2> */}
-        {albums.length > 0 && returnApi ? (
-          albums.map((album) => (
-            <Link
-              data-testid={ `link-to-album-${album.collectionId}` }
-              to="/album/:id"
-              key={ album.artistId }
-            >
-              <AlbumCard
-                imagePath={ album.artworkUrl100 }
-                collectionName={ album.collectionName }
-                artistName={ album.artistName }
-              />
-            </Link>))
+        { albums.length > 0 ? (
+          <>
+            <h2>{ `Resultado de álbuns de: ${artist}` }</h2>
+            <div>
+              {albums.map((album) => (
+                <AlbumCard
+                  key={ album.collectionId }
+                  collectionId={ album.collectionId }
+                  imagePath={ album.artworkUrl100 }
+                  collectionName={ album.collectionName }
+                  artistName={ album.artistName }
+                />))}
+            </div>
+          </>
         )
           : <h4>Nenhum álbum foi encontrado</h4>}
       </section>);
   }
 
   render() {
-    const { loadingAlbums } = this.props;
+    const { returnApi } = this.props;
     return (
       <div>
-        { loadingAlbums
+        { returnApi
           ? this.list()
           : <Loading /> }
       </div>
@@ -50,10 +45,11 @@ class AlbumsList extends React.Component {
 }
 
 AlbumsList.propTypes = {
-  loadingAlbums: PropTypes.bool.isRequired,
   returnApi: PropTypes.bool.isRequired,
+  artist: PropTypes.string.isRequired,
   albums: PropTypes.arrayOf(PropTypes.shape({
     artistName: PropTypes.string.isRequired,
+    collectionId: PropTypes.number.isRequired,
     collectionName: PropTypes.string.isRequired,
     artworkUrl100: PropTypes.string.isRequired,
   })).isRequired,

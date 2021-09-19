@@ -13,9 +13,10 @@ class Search extends React.Component {
     this.state = {
       searchText: '',
       loading: true,
-      returnApi: false,
+      returnApi: '',
       albums: '',
-      loadingAlbums: true,
+      loadingAlbums: false,
+      artist: '',
     };
   }
 
@@ -45,16 +46,16 @@ class Search extends React.Component {
   async searchArtist() {
     const { searchText } = this.state;
     this.setState({
+      artist: searchText,
       searchText: '',
       returnApi: false,
       albums: '',
-      loadingAlbums: false,
+      loadingAlbums: true,
     });
     const queryResult = await searchAlbumsAPI(searchText);
     this.setState({
       returnApi: true,
-      albums: queryResult,
-      loadingAlbums: true,
+      albums: [...queryResult],
     });
   }
 
@@ -83,7 +84,7 @@ class Search extends React.Component {
   }
 
   render() {
-    const { loading, returnApi, albums, loadingAlbums } = this.state;
+    const { loading, returnApi, albums, loadingAlbums, artist } = this.state;
     return (
       <section data-testid="page-search">
         {loading ? this.formSearch()
@@ -93,6 +94,7 @@ class Search extends React.Component {
             returnApi={ returnApi }
             albums={ albums }
             loadingAlbums={ loadingAlbums }
+            artist={ artist }
           />)
           : null) }
       </section>
