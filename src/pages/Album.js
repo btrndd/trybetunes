@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import getMusics from '../services/musicsAPI';
 import MusicCard from '../components/MusicCard';
 import Header from '../components/Header';
-// import Loading from '../components/Loading';
 
 class Album extends React.Component {
   constructor() {
     super();
     this.listMusics = this.listMusics.bind(this);
-    this.setLoadingState = this.setLoadingState.bind(this);
     this.state = {
       musics: [],
       artist: '',
@@ -20,31 +18,6 @@ class Album extends React.Component {
 
   componentDidMount() {
     this.listMusics();
-  }
-
-  // async requestAddSong({ target }) {
-  //   const songId = +target.id;
-  //   const value = target.checked;
-  //   const { musics } = this.state;
-  //   this.setState({
-  //     favorite: value,
-  //   });
-  //   if (target.checked) {
-  //     this.setState({
-  //       loading: false,
-  //     });
-  //     const music = musics.find((element) => element.trackId === songId);
-  //     await addSong(music);
-  //     this.setState({
-  //       loading: true,
-  //     });
-  //   }
-  // }
-
-  setLoadingState(loading) {
-    this.setState({
-      loading,
-    });
   }
 
   async listMusics() {
@@ -68,8 +41,6 @@ class Album extends React.Component {
           {musics.slice(1).map((music) => (<MusicCard
             key={ music.trackId }
             info={ music }
-            musics={ musics }
-            loadingStateCallback={ this.setLoadingState }
             loading={ loading }
           />))}
         </div>

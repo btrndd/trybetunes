@@ -30,7 +30,7 @@ class MusicCard extends React.Component {
   }
 
   async requestAddSong({ target }) {
-    const { info } = this.props;
+    const { info, setLoading, getFavorites } = this.props;
     const value = target.checked;
     this.setState({
       favorite: value,
@@ -47,10 +47,12 @@ class MusicCard extends React.Component {
       this.setState({
         loading: false,
       });
+      setLoading();
       await removeSong(info);
       this.setState({
         loading: true,
       });
+      getFavorites();
     }
   }
 
@@ -94,6 +96,8 @@ MusicCard.propTypes = {
     trackName: PropTypes.string.isRequired,
     trackId: PropTypes.number.isRequired,
   }).isRequired,
+  getFavorites: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
 };
 
 export default MusicCard;
