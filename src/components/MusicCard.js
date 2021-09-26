@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getFavoriteSongs, addSong } from '../services/favoriteSongsAPI';
+import { getFavoriteSongs, addSong, removeSong } from '../services/favoriteSongsAPI';
 import Loading from './Loading';
 
 class MusicCard extends React.Component {
@@ -17,15 +17,6 @@ class MusicCard extends React.Component {
   componentDidMount() {
     this.requestFavSongs();
   }
-
-  // componentDidUpdate() {
-  //   this.requestFavSongs();
-  // }
-
-  // handleState(number) {
-  //   this.setState({ detailState: number });
-  //   this.props.detailStateCallback(number);
-  // }
 
   async requestFavSongs() {
     const { props:
@@ -49,6 +40,14 @@ class MusicCard extends React.Component {
         loading: false,
       });
       await addSong(info);
+      this.setState({
+        loading: true,
+      });
+    } else if (!target.checked) {
+      this.setState({
+        loading: false,
+      });
+      await removeSong(info);
       this.setState({
         loading: true,
       });
